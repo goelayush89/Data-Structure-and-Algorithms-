@@ -5,12 +5,8 @@ public:
     void dfs(vector<vector<int>>& image,int initialColour, int newColor ,int i ,int j){
         int  n = image.size();
         int m = image[0].size();
-        if(i<0 || j<0 ) return ;
-        if(i>=n || j>=m) return ;
-        
-        
-        if(image[i][j]!=initialColour) return;
-        
+        if(i<0 || j<0 || i>=n || j>=m || image[i][j]!=initialColour) return ;
+       
         
         image[i][j]= newColor;
         
