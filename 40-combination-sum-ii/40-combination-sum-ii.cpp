@@ -1,20 +1,24 @@
 class Solution {
 public:
     void getSubs(int ind,vector<vector<int>>&ans,vector<int>&ds,int target,vector<int>&candidates){
-        
+   if(ind==candidates.size()){    
         if(target==0){
             ans.push_back(ds);
             return;
         }
+        return;
+   }
+        if(candidates[ind]<=target)
+        {
         
-        for(int i=ind;i<candidates.size();i++){
-            if(i>ind && candidates[i-1]==candidates[i]) continue;
-            if(candidates[i]>target) break;
-            ds.push_back(candidates[i]);
-            getSubs(i+1,ans,ds,target-candidates[i],candidates);
-            ds.pop_back();
+            ds.push_back(candidates[ind]);
+            getSubs(ind+1,ans,ds,target-candidates[ind],candidates);
+            ds.pop_back();}
+        
+    while(ind+1<candidates.size() && candidates[ind] == candidates[ind+1]) ind++;
+    getSubs(ind+1,ans,ds,target,candidates);
             
-        }
+        
     }
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
         sort(candidates.begin(),candidates.end());
