@@ -5,7 +5,7 @@ public:
          string check = s.substr(start,end-start+1);
         for(int i =0;i<n;i++){
          
-            if(check.compare(dict[i])==0) return true;
+            if(check == dict[i]) return true;
            
         }
          
