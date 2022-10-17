@@ -13,14 +13,14 @@ public:
     
     
 void   preorder(TreeNode* original, TreeNode* cloned, TreeNode* target ,TreeNode * &ans   ){
-         if(cloned == NULL) return   ;
+         if(original== NULL) return   ;
        
-         if(cloned->val == target->val) {  
+         if(original == target) {  
              
             ans =  cloned; }
        
-          preorder(original,cloned->left,target,ans);
-          preorder(original,cloned->right ,target,ans);
+          preorder(original->left,cloned->left,target,ans);
+          preorder(original->right,cloned->right ,target,ans);
       
       
        }
