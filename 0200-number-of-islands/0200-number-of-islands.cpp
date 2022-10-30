@@ -1,19 +1,33 @@
 class Solution {
 public:
     
-    void dfs(int i ,int j , vector<vector<int>>&vis,vector<vector<char>>& grid){
+    void bfs(int i ,int j , vector<vector<int>>&vis,vector<vector<char>>& grid){
         int n = grid.size();
         int m = grid[0].size();
-        if(i<0 || i>=n || j<0 || j>=m || vis[i][j]==1 || grid[i][j]=='0') return ;
         
+       queue<pair<int,int>>q;
+        
+        q.push({i,j});
         vis[i][j]=1;
-         
-        dfs(i-1,j,vis,grid);
-        dfs(i+1,j,vis,grid);
-         dfs(i,j-1,vis,grid);
-         dfs(i,j+1,vis,grid);
+        int dx[] = {-1,0,1,0};
+        int dy[] = { 0, 1,0,-1};
         
-        
+        while(!q.empty()){
+             auto node  = q.front();
+             int cx = node.first;
+             int cy = node.second;
+             q.pop();
+              for(int i=0;i<4;i++){
+                  int nx = cx+dx[i];
+                  int ny = cy + dy[i];
+                  
+              if(nx<n && ny<m && nx>=0 && ny>=0 && !vis[nx][ny] && grid[nx][ny]=='1' ){
+                  q.push({nx,ny});
+                  vis[nx][ny]=1;
+              }
+              }
+            
+        }
         
     }
     int numIslands(vector<vector<char>>& grid) {
@@ -26,7 +40,7 @@ public:
                 if(grid[i][j]=='1'){
                     if(!vis[i][j]){
                         cnt++;
-                        dfs(i,j,vis,grid);
+                        bfs(i,j,vis,grid);
                     }
                 }
             }
