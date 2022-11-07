@@ -1,46 +1,59 @@
-class Solution {
-public:
-        void bfs(int node ,  vector<int>&vis,vector<int>adj[]){
-        queue<int>q;
-        q.push(node);
-        vis[node]=1;
-        while(!q.empty()){
-       int fr = q.front(); 
-       q.pop();
-       
-        for(auto i : adj[fr]){
-            if(!vis[i]){
-                vis[i]=1;
-                q.push(i);
-            }
-            
-        }
-            
-            
-            
+class DisjointSet{
+    vector<int>rank,parent ,size;
+    
+    public:
+   DisjointSet(int n){
+        rank.resize(n+1);
+        parent.resize(n+1);
+        for(int i=0;i<=n;i++){
+            parent[i]=i;
         }
     }
-    int findCircleNum(vector<vector<int>>& adj) {
-        int  V = adj[0].size();
-       vector<int>adj_list[V];
+    
+    
+    int findParent(int node){
+    if(parent[node] ==node) return node;
+    return parent[node] = findParent(parent[node]);
+}
+    
+    void unionByRank(int u ,int v){
+        int ulp_u = findParent(u);
+        int ulp_v = findParent(v);
+        if(ulp_u == ulp_v) return ;
         
-        for(int i=0;i<V;i++){
-            for(int j=0;j<V;j++){
-                if(adj[i][j]==1 && i!=j){
-                    adj_list[i].push_back(j);
-                    adj_list[j].push_back(i);
-                }
-            }
+        if(rank[ulp_u] < rank[ulp_v]) {
+            parent[ulp_u]=ulp_v;
+        }else   if(rank[ulp_u] > rank[ulp_v]) {
+            parent[ulp_v]=ulp_u;
+        }else {
+             parent[ulp_v]=ulp_u;
+            rank[ulp_u]++;
         }
         
-        
-        vector<int>vis(V+1,0);
+        }
+    
+};
+
+
+class Solution {
+public:
+    
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        DisjointSet ds(n);
+        for(int i=0;i<n;i++){
+               for(int j=0;j<n;j++){
+                   if(isConnected[i][j]==1){
+                       ds.unionByRank(i,j);
+                   }
+               }
+        }
         int cnt=0;
-        for(int i=0;i<V;i++){
-            if(!vis[i]){
-                bfs(i,vis,adj_list);
+        for(int i=0;i<n;i++){
+            if(ds.findParent(i)==i){
                 cnt++;
             }
+            
         }
         
         return cnt;
